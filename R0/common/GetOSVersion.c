@@ -2,6 +2,16 @@
 
 ULONG g_ulOsVersion = OS_VERSION_ERROR;
 
+/*
+	R3:
+		typedef LONG(__stdcall *fnRtlGetVersion)(PRTL_OSVERSIONINFOW lpVersionInformation);  
+		fnRtlGetVersion pRtlGetVersion;  
+		HMODULE hNtdll;  
+		RTL_OSVERSIONINFOW VersionInformation = { 0 };
+		hNtdll = GetModuleHandleW(L"ntdll.dll"); 
+		pRtlGetVersion = (fnRtlGetVersion)GetProcAddress(hNtdll, "RtlGetVersion"); 
+		pRtlGetVersion(&VersionInformation); 
+*/
 ULONG GetOSVersion()
 {
 
