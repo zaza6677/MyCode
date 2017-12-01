@@ -1,4 +1,3 @@
-//used in Kronos malware
 #ifdef _MSC_VER
     #include <stdint.h>
 #else
@@ -6,7 +5,10 @@
 #endif
 
 #include <stdio.h>
+#include <wchar.h>
 
+
+//used in Kronos malware
 bool is_system64_bit()
 {
     uint32_t flag = 0;
@@ -30,6 +32,63 @@ bool is_system64_bit()
     return (flag > 0);
 }
 
+bool detectArch_ES() {
+#if defined(_MSC_VER)
+    _asm {
+        xor eax, eax
+        mov ax, es
+        ror ax, 0x3
+        and eax, 0x1            
+    }
+#elif defined(__GNUC__)        
+asm(  
+        ".intel_syntax noprefix;"
+        "xor eax, eax;"
+        "mov ax, es;"
+        "ror ax, 0x3;"
+        "and eax, 0x1;"
+            
+    );
+#endif
+}
+
+bool detectArch_ES() {
+#if defined(_MSC_VER)
+    _asm {
+        xor eax, eax
+        mov ax, es
+        ror ax, 0x3
+        and eax, 0x1            
+    }
+#elif defined(__GNUC__)        
+asm(  
+        ".intel_syntax noprefix;"
+        "xor eax, eax;"
+        "mov ax, es;"
+        "ror ax, 0x3;"
+        "and eax, 0x1;"
+            
+    );
+#endif
+}
+
+bool detectArch_TEB() {
+#if defined(_MSC_VER)
+    _asm {
+        xor eax, eax
+        mov eax, fs:[0xc0]
+
+    }
+#elif defined(__GNUC__)        
+    asm(
+        ".intel_syntax noprefix;"
+        "xor eax, eax;"
+        "mov eax, fs:[0xc0];"
+        );
+#endif
+}
+
+
 int main()
 {
     bool is64bit = is_system64_bit();
@@ -38,5 +97,25 @@ int main()
     } else {
         printf("32 bit\n");
     }
+   /* 
+     wprintf(
+        !detectArch_ES() ? 
+        L"You are Running 32-bit\n" :
+        L"You are Running 64-bit\n"
+        );
+
+    
+    wprintf(
+        !detectArch_GS() ?
+        L"You are Running 32-bit\n" :
+        L"You are Running 64-bit\n"
+        );
+        
+    wprintf(
+        !detectArch_TEB() ?
+        L"You are Running 32-bit\n" :
+        L"You are Running 64-bit\n"
+        ); 
+    */ 
     return is64bit;
 }
