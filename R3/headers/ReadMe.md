@@ -1,0 +1,3 @@
+- usage:
+-   #include "Windows.h"
+-   #include "NativeLib.hpp" or #include "WinStationLib.hpp"
